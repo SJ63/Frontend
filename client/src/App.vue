@@ -2,38 +2,53 @@
 	<div id="app">
 		<div class="container-fluid">
 			<div class="row g-0">
-				<div class="col-2 nav-bg">
+				<div class="col-2 nav-bg position-relative">
 					<h2 class="text-white mt-3 ms-3">DASHBOARD</h2>
 					<ul class="nav flex-column ">
-						<li class="nav-item ">
+						<!-- <li class="nav-item ">
 							<a class="nav-link icon-link" href="/" >
 								<i class="bi bi-house-door d-flex" style="color: white;" ></i>
 								Home
 							</a>
-						</li>
+						</li> -->
 						<li class="nav-item ">
-							<a class="nav-link icon-link" href="/HomeDev" >
+							<a class="nav-link icon-link" href="/" >
 								<i class="bi bi-house-door d-flex" style="color: white;" ></i>
-								HomeDev
+									หน้าหลัก
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/EmpInCompany">
+								<i class="bi bi-person" style="color: white;"></i>
+									ภายในบริษัท
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/EmpInCleanroom">
+								<i class="bi bi-clipboard-plus" style="color: white;"></i>
+									เข้า Cleanroom
 							</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="/EmpNotInCleanroom">
 								<i class="bi bi-clipboard-plus" style="color: white;"></i>
-									Emp not in Cleanroom
+									ยังไม่เข้า Cleanroom
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="/EmpAllocate">
+							<a class="nav-link" href="/EmpAbsent">
 								<i class="bi bi-send-plus" style="color: white;"></i>
-									EmpAllocate
+									ขาดงาน
 							</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="/TrendEmp">
 								<i class="bi bi-calendar-date" style="color: white;"></i>
-									TrendEmp
+									แนวโน้ม
 							</a>
+						</li>
+						<li class="nav-item">
+							<p class="nav-link" style="color: white;">Current Time: {{ currentDate }}</p>
 						</li>
 					</ul>
 				</div>
@@ -49,9 +64,19 @@
 export default {
 	data() {
     return {
-      list: []  // เพิ่ม list ไว้ใน data
+		list: [],// เพิ่ม list ไว้ใน data
+		currentDate: this.getCurrentTime()
     };
+  },mounted() {
+    setInterval(() => {
+      this.currentTime = this.getCurrentTime();
+    }, 1000); 
   },
+  methods: {
+    getCurrentTime() {
+      return new Date().toLocaleTimeString();
+    }
+  }
 	
 
 }
@@ -71,6 +96,7 @@ export default {
 
 .page-bg {
 	background-color: #151F2F;
+
 }
 
 a:active {

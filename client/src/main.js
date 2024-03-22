@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-import HomeDashboard from './components/HomeDashboard'
+
 import HomeDashboardDev from './components/HomeDashboardDev'
-import EmpAllocate from './components/EmpAllocate'
-import EmpSelect from './components/EmpSelect'
+import Transaction from './components/Transaction'
+import EmpAbsent from './components/EmpAbsent_copy'
 import TrendEmp from './components/TrendEmp'
+import EmpInCompany from './components/EmpInCompany'
+import EmpInCleanroom from './components/EmpInCleanroom'
 
 import VueRouter from 'vue-router'
 
@@ -25,19 +27,23 @@ const router = new VueRouter({
 	routes: [
 		{
 			path: '/',
-			component: HomeDashboard
-		},
-		{
-			path: '/HomeDev',
 			component: HomeDashboardDev
 		},
 		{
-			path: '/EmpNotInCleanroom',
-			component: EmpSelect
+			path: '/EmpInCompany',
+			component: EmpInCompany
 		},
 		{
-			path: '/EmpAllocate',
-			component: EmpAllocate
+			path: '/EmpInCleanroom',
+			component: EmpInCleanroom
+		},
+		{
+			path: '/EmpNotInCleanroom',
+			component: Transaction
+		},
+		{
+			path: '/EmpAbsent',
+			component: EmpAbsent
 		},
 		{
 			path: '/TrendEmp',
@@ -50,6 +56,6 @@ const router = new VueRouter({
 Vue.config.productionTip = false
 
 new Vue({
-	router,
-  render: h => h(App),
+    router,
+    render: h => h(App)
 }).$mount('#app')
