@@ -292,6 +292,7 @@ export default {
         all_course_group: [],
         all_skill_group: [],
 		man_require: [],
+		already_replacement: [],
 		shift: '',
 		replace_skill: [],
 		date: '',
@@ -299,10 +300,7 @@ export default {
 		months: [ "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"]
     }),
     created() {
-        // * axios
         this.EmpLog();
-        // * raw data
-        // this.format_data()
     },
     computed: {
         filtered_not_work() {
@@ -408,13 +406,15 @@ export default {
     methods: {
         async EmpLog() {
             await axios
-                .get("http://localhost:5001/CombinedData")
+                .get("http://43.239.251.75:5000/CombinedData")
                 .catch((err) => console.log(err))
                 .then((response) => {
                     // console.log(response.data)
                     const data = response.data;
 
                     for (let i = 0; i < data.length; i++) {
+
+						// * Check Employee Absent
                         if (data[i].faceScanLog === null) {
                             // this.list_absent.push(data[i])
 
@@ -484,12 +484,21 @@ export default {
                 });
         },
 		async Man_Require() {
-			await axios.get("http://localhost:5001/HeadCountTransitionCOUNT")
+			await axios.get("http://43.239.251.75:5000/HeadCountTransitionCOUNT")
 						.catch((err) => console.log(err))
 						.then((response) => {
 							const data = response.data
 							
 							this.man_require = data.slice(0)
+						})
+		},
+		async already_replace () {
+			await axios.get("http://43.239.251.75:5000/Replacement")
+						.catch((err) => console.log(err))
+						.then((response) => {
+							const data = response.data
+							
+							this.already_replacement = data.slice(0)
 						})
 		},
         format_data() {
@@ -571,6 +580,7 @@ export default {
         async selected_people(obj) {
 
 			await this.Man_Require()
+			await this.already_replace()
 			// console.log(obj);
 			this.find_repleace(obj)
         },
@@ -584,41 +594,54 @@ export default {
 			// }
 			// console.log(obj);
 			// console.log( this.man_require);
-			const require_over = this.man_require.filter((p) => {
-				if ((p.day + p.night) > p.require) {
-					return p
+			console.log(this.already_replacement);
+			for (let i = 0; i < this.already_replacement.length; i++) {
+				if (this.already_replacement[i].empID === obj.empId) {
+					this.replace_skill = [this.already_replacement[i]]
+					console.log(true);
+					break
 				}
-			})
+				else {
+					console.log(false);
+					// * Check manpowerplan > require
+					const require_over = this.man_require.filter((p) => {
+						if ((p.day + p.night) > p.require) {
+							return p
+						}
+					})
 
-			// console.log(require_over);
-			const repleace = this.list_Work.filter((p) => {
-				for (let i = 0; i < require_over.length; i++) {
-					if (require_over[i].biz === p.biz && require_over[i].process === p.process ) {
-						if ( p.skillGroup.length > 1) {
-							for (let j = 0; j < p.skillGroup.length; j++) {
-								if (require_over[j].skillGroup === p.skillGroup[i]) {
-									return p
+					// console.log(require_over);
+					const repleace = this.list_Work.filter((p) => {
+						for (let i = 0; i < require_over.length; i++) {
+							// * Find Emp who can be replace by process in manpowerplan > require
+							if (require_over[i].biz === p.biz && require_over[i].process === p.process ) {
+								if ( p.skillGroup.length > 1) {
+									for (let j = 0; j < p.skillGroup.length; j++) {
+										if (require_over[j].skillGroup === p.skillGroup[i]) {
+											return p
+										}
+									}
+								} else {
+									if (require_over[i].skillGroup === p.skillGroup[0]) {
+										return p
+									}
+									
 								}
 							}
-						} else {
-							if (require_over[i].skillGroup === p.skillGroup[0]) {
-								return p
-							}
-							
 						}
-					}
-				}
-			})
-			
-			console.log(repleace);
-			const repleace_filter = repleace.filter((p) => {
-				if (obj.skillGroup === p.skillGroup[0]) {
-					return p
-				}
-			})
+					})
+					
+					console.log(repleace);
+					const repleace_filter = repleace.filter((p) => {
+						if (obj.skillGroup === p.skillGroup[0] && p.empId != this.already_replacement[i].r_EmpID) {
+							return p
+						}
+					})
 
-			this.replace_skill = repleace_filter
-			console.log(repleace_filter);
+					this.replace_skill = repleace_filter
+					// console.log(repleace_filter);
+				}
+			}
 		}
     },
 };

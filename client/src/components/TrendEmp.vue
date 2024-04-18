@@ -180,16 +180,16 @@ created(){
 },methods: {
     async fetchData() {
     try {
-        const HEAD_tra = await axios.get("https://localhost:5001/HeadCountTransitionYearMonth"); 
+        const HEAD_tra = await axios.get("http://43.239.251.75:5000/HeadCountTransitionYearMonth"); 
         this.responseData1 = HEAD_tra.data;
-        // const HEAD_COM = await axios.get("https://localhost:5001/HeadCountTransitionCOUNT"); 
+        // const HEAD_COM = await axios.get("http://43.239.251.75:5000/HeadCountTransitionCOUNT"); 
         // this.responseData2 = HEAD_COM.data;
         
-        const HEAD_DIV = await axios.get("https://localhost:5001/HeadCountbyDiv"); 
+        const HEAD_DIV = await axios.get("http://43.239.251.75:5000/HeadCountbyDiv"); 
         this.responseData3 = HEAD_DIV.data;
         
 
-        const HEAD_GROUP = await axios.get("https://localhost:5001/HeadCountbyWorkGroup"); 
+        const HEAD_GROUP = await axios.get("http://43.239.251.75:5000/HeadCountbyWorkGroup"); 
         this.responseData4 = HEAD_GROUP.data;
         
 

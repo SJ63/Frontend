@@ -97,7 +97,6 @@
                             <th>CourseGroup</th>
                             <th>SkillGroup</th>
                             <th>สถานะ</th>
-                            <th>เลือกพนักงาน</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -110,11 +109,6 @@
 							<td>{{ item.process }}</td>
 							<td>{{ item.courseGroup[0] }}</td>
 							<td>{{ item.skillGroup[0] }}</td>
-							<td>Yes</td>
-							<td><span id='clickableAwesomeFont' @click="selected_people(item.empId)"
-							data-bs-toggle="modal" data-bs-target="#exampleModal">
-								<i class="bi bi-arrow-right-circle-fill">
-							</i></span></td>
 						</tr>
 					</tbody>
 				</table>
@@ -253,29 +247,30 @@ export default {
 	},
 	methods: {
 		async EmpLog () {
-			await axios.get("http://localhost:5001/CombinedData")
+			await axios.get("http://43.239.251.75:5000/CombinedData")
 				.catch((err) => console.log(err))
 				.then((response) => {
-					// console.log(response.data)
+					console.log(response.data)
 					const data = response.data
 
 					for (let i = 0; i < data.length; i++) {
-						if (data[i].faceScanLog != null) {
-							// this.list_absent.push(data[i])
 
+						// * Check In Company
+						if (data[i].faceScanLog != null && data[i].faceScanLog.status === 'IN') {
 							this.list_absent.push({
-							empId: data[i].employeeInfo.empId,
-							firstName: data[i].employeeInfo.firstName,
-							lastName: data[i].employeeInfo.lastName,
-							biz: data[i].employeeInfo.biz,
-							process: data[i].employeeInfo.process,
-							courseGroup: data[i].ojT_InspectionSkill.map(
-								c => c.courseGroup
-							),
-							skillGroup: data[i].ojT_InspectionSkill.map(
-								sk => sk.skillGroup
-							)
-						})
+								empId: data[i].employeeInfo.empId,
+								firstName: data[i].employeeInfo.firstName,
+								lastName: data[i].employeeInfo.lastName,
+								biz: data[i].employeeInfo.biz,
+								process: data[i].employeeInfo.process,
+								courseGroup: data[i].ojT_InspectionSkill.map(
+									c => c.courseGroup
+								),
+								skillGroup: data[i].ojT_InspectionSkill.map(
+									sk => sk.skillGroup
+								)
+							})
+							// this.list_absent.push(data[i])
 						}
 					}
 
@@ -372,11 +367,6 @@ export default {
 			console.log(skill);
 			this.selected_skill_value = skill
 		},
-		selected_people(EmpId) {
-			this.showModal = true
-			console.log(EmpId);
-			console.log(this.showModal);
-		}
 	}
 }
 </script>

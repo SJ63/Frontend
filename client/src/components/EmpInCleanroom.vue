@@ -96,8 +96,6 @@
                             <th>Process</th>
                             <th>CourseGroup</th>
                             <th>SkillGroup</th>
-                            <th>สถานะ</th>
-                            <th>เลือกพนักงาน</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -110,11 +108,6 @@
 							<td>{{ item.process }}</td>
 							<td>{{ item.courseGroup[0] }}</td>
 							<td>{{ item.skillGroup[0] }}</td>
-							<td>Yes</td>
-							<td><span id='clickableAwesomeFont' @click="selected_people(item.empId)"
-							data-bs-toggle="modal" data-bs-target="#exampleModal">
-								<i class="bi bi-arrow-right-circle-fill">
-							</i></span></td>
 						</tr>
 					</tbody>
 				</table>
@@ -253,13 +246,15 @@ export default {
 	},
 	methods: {
 		async EmpLog () {
-			await axios.get("http://localhost:5001/CombinedData")
+			await axios.get("http://43.239.251.75:5000/CombinedData")
 				.catch((err) => console.log(err))
 				.then((response) => {
 					// console.log(response.data)
 					const data = response.data
 
 					for (let i = 0; i < data.length; i++) {
+
+						// * Check in Cleanroom
 						if (data[i].gateLog != null && data[i].gateLog.status === 'IN') {
 							// this.list_Incleanroom.push(data[i])
 
@@ -372,11 +367,6 @@ export default {
 			console.log(skill);
 			this.selected_skill_value = skill
 		},
-		selected_people(EmpId) {
-			this.showModal = true
-			console.log(EmpId);
-			console.log(this.showModal);
-		}
 	}
 }
 </script>

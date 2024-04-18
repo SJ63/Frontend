@@ -278,7 +278,7 @@ export default {
     methods: {
         async EmpLog() {
             await axios
-                .get("http://localhost:5001/NOT_INCLEAN")
+                .get("http://43.239.251.75:5000/NOT_INCLEAN")
                 .catch((err) => console.log(err))
                 .then((response) => {
                     // console.log(response.data)
@@ -287,7 +287,7 @@ export default {
                 });
         },
         format_data() {
-            // * raw data
+            
 			this.date = new Date()
 
             const data = this.list_not_in_cleanroom;

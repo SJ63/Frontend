@@ -368,16 +368,16 @@ export default {
 	methods: {
     async man_power_plan() {
         try {
-            const Head_count = await axios.get("http://localhost:5001/CombinedData");
+            const Head_count = await axios.get("http://43.239.251.75:5000/CombinedData");
             this.respond1 = Head_count.data;
             
-            const HEAD_COM = await axios.get("http://localhost:5001/RBAControl"); 
+            const HEAD_COM = await axios.get("http://43.239.251.75:5000/RBAControl"); 
             this.responseData2 = HEAD_COM.data;
 
-            const REQ = await axios.get("http://localhost:5001/HeadCountTransitionCOUNT")
+            const REQ = await axios.get("http://43.239.251.75:5000/HeadCountTransitionCOUNT")
             this.respondq = REQ.data;
 
-            const REP = await axios.get("http://localhost:5001/Replacement")
+            const REP = await axios.get("http://43.239.251.75:5000/Replacement")
             this.respondre = REP.data;
             
             // this.date = new Date()
@@ -405,7 +405,7 @@ export default {
     },
     async Realtime() {
         try {
-            const Head_count = await axios.get("http://localhost:5001/REALTIME_ATTEN");
+            const Head_count = await axios.get("http://43.239.251.75:5000/REALTIME_ATTEN");
             this.respond1 = Head_count.data;
             
             this.Head_CO(this.respond1);	

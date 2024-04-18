@@ -377,7 +377,7 @@ export default {
     methods: {
         async EmpLog() {
             await axios
-                .get("http://localhost:5001/CombinedData")
+                .get("https://localhost:5001/CombinedData")
                 .catch((err) => console.log(err))
                 .then((response) => {
                     // console.log(response.data)
